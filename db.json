@@ -1,0 +1,10 @@
+{
+    "books": [
+        {
+            "id": 1,
+            "title": "Crime and Punishment",
+            "fileName": "64bfb53a-775e-4e38-a876-cf9ada14a47a.pdf",
+            "author": "Fyodor Dostoevsky"
+        }
+    ]
+}
