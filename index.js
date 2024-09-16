@@ -6,6 +6,7 @@ const multer = require("multer");
 const path = require("path");
 const { BlobServiceClient } = require("@azure/storage-blob");
 const cors = require("cors");
+const fs = require("fs");
 const mongoose = require("mongoose");
 
 const mongoUrl = process.env.MONGO_URL;
@@ -70,6 +71,9 @@ app.post("/generate/audio", async (req, res) => {
   console.log(response);
   console.log("audio generated");
 
+  //delete pdf
+  await fs.unlinkSync(pdfFile);
+
   const result = await uploadFile(audioFile, audioFilePath, "audio");
   if (result === -1) return res.send("Failed to upload audio file");
 
@@ -82,10 +86,10 @@ app.post("/generate/audio", async (req, res) => {
       pageStart: pageStart,
       pageEnd: pageEnd,
       bookId: req.body.bookId,
-      userId: req.body.userId
+      userId: req.body.userId,
     });
     await audio.save();
-    
+
     res.status(200).json({ audioUrl });
   } catch (error) {
     console.log(error);
@@ -113,7 +117,16 @@ app.post("/upload/book", upload.single("file"), async (req, res) => {
 
   await mongoose.connect(mongoUrl);
 
-  const result = await uploadFile(sanitizedFileName, filePath, "books");
+  const uploadsPath = path.join(__dirname, "uploads");
+
+  const uploadFiles = await fs.readdirSync(uploadsPath);
+  const uploadFilePath = [];
+
+  for (const file of uploadFiles) {
+    uploadFilePath.push(path.join(uploadsPath, file));
+  }
+
+  const result = await uploadFile(sanitizedFileName, filePath, "books", uploadFilePath);
   if (result === -1) return res.send("Failed to upload file");
 
   try {
