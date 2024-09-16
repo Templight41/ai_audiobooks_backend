@@ -1,5 +1,5 @@
 .env
 node_modules
 uploads
-books/** */
-audioOutput/*
+books/*.pdf
+audioOutput/*.mp3
