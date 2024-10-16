@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
-const books = require("../schema/books");
+const Books = require("../schema/books");
 
 module.exports = async () => {
     try {
-        mongoose.connect(process.env.MONGO_URL);
+        await mongoose.connect(process.env.MONGO_URL);
 
         console.log("Connected to database");
 
-        const response = await books.find({});
+        const response = await Books.find({});
 
         console.log(response)
         return response

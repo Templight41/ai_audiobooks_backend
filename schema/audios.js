@@ -5,7 +5,7 @@ const Audios = new mongoose.Schema({
     pageStart: { type: Number, unique: false },
     pageEnd: { type: Number, unique: false },
     bookId: { type: String, unique: false },
-    audioUrl: { type: String, unique: false },
+    audioParts: { type: Array, unique: false },
 })
 
 // module.exports = Tasks
